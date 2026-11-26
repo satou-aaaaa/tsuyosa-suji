@@ -743,7 +743,7 @@ html.a11y-say body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))!i
   </ol>
   <p>自信があるときは、答える前に「🎯 自信あり？」を押します（押さなくても遊べます）。</p>
   <p>まちがえても、何度でも選び直せます。まちがえた問題は、次の日から「復習」にもどってきます。今日の5問はだれでも同じで、1日1回。時間制限はありません。</p>
-  <p>見込み64%は、100局すると、およそ64点（勝ち1点・引き分け0.5点）取れるということです。見込みは FIDE（国際チェス連盟）の表で、点の差から読みます。動く点は K × (得点 − 見込み) です。</p>
+  <p>見込み64%は、100局すると、およそ64点（勝ち1点・引き分け0.5点）取れるということです。見込みは FIDE（国際チェス連盟）の表で、点の差から読みます。動く点は K × (得点 − 見込み) で、大会の分を合わせてから整数に丸めます。問題は1局だけの大会として数えます。</p>
   <p>このゲームはレーティングのしくみを知る練習です。選手と大会は架空で、本物の選手の記録ではありません。お金や賭けとは関係ありません。</p>
   <p><a id="fb2" target="_blank" rel="noopener" data-feedback="fun">感想を送る</a></p>
   <button class="main" id="howto-ok" style="width:100%">わかった</button>
@@ -897,7 +897,7 @@ const TIPS = [
   ["400点まで", "2650点より下の選手では、400点より大きい差は400点として数えます。"],
   ["K は3つ", "はじめのうちと18歳の年まで（2300点より下）は40、ふつうは20、2400点に届いたら10です。"],
   ["足すと100%", "2人の見込みを足すと、いつも100%です。"],
-  ["端数の丸め方", "動く点はいちばん近い整数に。0.5 は0から遠いほうへ丸めます。"],
+  ["端数の丸め方", "大会の動く点は、各局を合わせてから近い整数に。0.5 は0から遠いほうへ。"],
 ];
 const tipOf = (k) => TIPS[((dayNo(k) - 1) % TIPS.length + TIPS.length) % TIPS.length];
 
@@ -1252,7 +1252,7 @@ function solved() {
   $("hintbox").innerHTML = ""; $("msg").className = "msg"; $("msg").textContent = "";
   $("after").innerHTML = `<div class="verdict" role="status">
     <div class="hd">✓ 正解！ ${starStr(st)}</div>
-    ${P.grp ? `<p class="note" style="text-align:left">Bの点：<b>${esc(G.GROUPS[P.grp].name)}</b><br>${esc(P.gwhy)}</p>` : ""}
+    ${P.grp ? `<p class="note" style="text-align:left" data-a11y-say>Bの点：<b>${esc(G.GROUPS[P.grp].name)}</b><br>${esc(P.gwhy)}</p>` : ""}
     ${cur.jd && cur.jd.sure ? `<p class="sure-res">${cur.jd.ok ? "🎯 自信ありで当てた" : "🎯 自信ありでまちがえた。ここを覚えよう"}</p>` : ""}
     <p class="why" data-a11y-say><b>${esc(P.name)}：</b>${esc(P.why)}</p>
     ${srcHtml(P)}
